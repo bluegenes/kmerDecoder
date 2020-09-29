@@ -4,6 +4,7 @@ void extract(kmerDecoder *KD);
 
 int main() {
   std::string filename = "sample.fa";
+  std::string protein_filename = "test-protein.fa";
   unsigned int chunk_size = 100;
 
   /*
@@ -19,6 +20,9 @@ int main() {
   // 3- Minimizers Mode > Minimizers(seqan_object, chunk_size, k, w)
   kmerDecoder *MINIMIZERS = new Minimizers(filename, chunk_size, 5, 10);
 
+  // 4- Protein Kmers Mode > Kmers(seqan_object, chunk_size, kSize)
+  kmerDecoder *PROTKMERS = new ProteinKmers(protein_filename, chunk_size, 15);
+  
   // Start Extraction
 
   std::cout << "Mode: Kmers" << "\n";
@@ -33,10 +37,15 @@ int main() {
   extract(MINIMIZERS);
   std::cout << "------------------------------------" << std::endl;
 
+  std::cout << "Mode: ProteinKmers" << "\n";
+  extract(PROTKMERS);
+  std::cout << "------------------------------------" << std::endl;
+  
   // Freeing the memory
     delete KMERS;
     delete SKIPMERS;
     delete MINIMIZERS;
+    delete PROTKMERS;
 
 }
 
