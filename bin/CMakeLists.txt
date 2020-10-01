@@ -5,5 +5,6 @@ project (kmerDecoder C CXX)
 add_executable(test_kmerDecoder main.cpp)
 
 file(COPY sample.fa DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY test-protein.fa DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 target_link_libraries(test_kmerDecoder kmerDecoder)

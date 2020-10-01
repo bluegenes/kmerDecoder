@@ -394,3 +394,81 @@ public:
     ~Minimizers(){}
 
 };
+
+/*
+--------------------------------------------------------
+                        Protein Kmers
+--------------------------------------------------------
+*/
+
+
+class ProteinKmers : public kmerDecoder {
+
+private:
+    unsigned kSize{};
+
+    void extractKmers();
+
+public:
+
+    explicit ProteinKmers(int k_size, int hash_mode = 1) : kSize(k_size) {
+        this->hasher = new IntegerHasher(kSize); // I assume I need to make ProteinIntegerHasher
+        this->slicing_mode = "kmers";
+        this->hash_mode = 1;
+        this->canonical = false;
+        if (hash_mode != 1) {
+            this->setHashingMode(hash_mode);
+        }
+    };
+
+    ProteinKmers(const std::string &filename, unsigned int chunk_size, int kSize) {
+        this->kSize = kSize;
+        this->fileName = filename;
+        this->chunk_size = chunk_size;
+        this->initialize_kSeq();
+        //this->hasher = new IntegerHasher(kSize);
+        this->hasher = new MumurHasher(2038074761);
+        this->hash_mode = 0;
+        this->canonical = false;
+        this->slicing_mode = "kmers";
+    }
+
+    void setHashingMode(int hash_mode, bool canonical = true) {
+
+        // bool canonical is used only in IntegerHasher and TwoBitsHasher
+
+        this->hash_mode = hash_mode;
+        this->canonical = canonical;
+
+        hasher = (new MumurHasher(2038074761))
+        //if (hash_mode == 0) hasher = (new MumurHasher(2038074761));
+        // else if (hash_mode == 1) { 
+        //    hasher = (new noncanonical_IntegerHasher(kSize)
+          //  if (canonical) hasher = (new IntegerHasher(kSize));
+          //  else hasher = (new noncanonical_IntegerHasher(kSize));
+        //} else if (hash_mode == 2) {
+            //if (canonical) {
+                // hasher = (new TwoBitsHasher(kSize));
+            // } else {
+         //   hasher = (new noncanonical_TwoBitsHasher(kSize));
+         //   }
+        //} else if (hash_mode == 3){
+         //   hasher = (new bigKmerHasher(kSize));
+       // }else {
+        //    hasher = (new IntegerHasher(kSize));
+        //}
+
+    }
+
+
+    void seq_to_kmers(std::string &seq, std::vector<kmer_row> &kmers);
+
+
+    int get_kSize() {
+        return this->kSize;
+    }
+
+    ~Kmers(){}
+
+};
+
